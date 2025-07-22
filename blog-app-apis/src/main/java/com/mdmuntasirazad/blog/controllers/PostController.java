@@ -76,7 +76,7 @@ public class PostController {
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId) {
         // FIX: The variable 'postDto' is now correctly declared as PostDto.
-        PostDto postDto = this.postService.getPostById(postId);
+        PostDto postDto = this.postService.getPostById(postId); 
         return new ResponseEntity<>(postDto, HttpStatus.OK);
     }
 
