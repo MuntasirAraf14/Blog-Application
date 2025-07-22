@@ -3,6 +3,8 @@ package com.mdmuntasirazad.blog.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,27 +18,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
-@Entity // Marks this class as a JPA entity, so it can be mapped to a database table.
-@Table(name = "categories") // Specifies the name of the database table.
+@Entity
+@Table(name = "categories")
 @NoArgsConstructor
 @Getter
 @Setter
 public class Category {
 
-    @Id // Marks this field as the primary key.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Configures the way of incrementing the primary key. IDENTITY is best for MySQL.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoryId;
 
-    @Column(name = "title", length = 100, nullable = false) // Defines column properties.
+    @Column(name = "title", length = 100, nullable = false)
     private String categoryTitle;
 
     @Column(name = "description")
     private String categoryDescription;
 
-    // A category can have many posts. This establishes the one-to-many relationship.
+    // UPDATE: Restored the one-to-many relationship to the Post entity.
+    // This is essential for a category to be useful.
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("post-category") // Manages the "forward" part of the reference to prevent infinite loops.
     private List<Post> posts = new ArrayList<>();
-
 }

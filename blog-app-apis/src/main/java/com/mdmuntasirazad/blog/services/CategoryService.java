@@ -3,7 +3,7 @@ package com.mdmuntasirazad.blog.services;
 import java.util.List;
 import com.mdmuntasirazad.blog.payloads.CategoryDto;
 
-public interface CategoryRepo {
+public interface CategoryService {
 	
 	// Create a new category
 	CategoryDto createCategory(CategoryDto categoryDto);
