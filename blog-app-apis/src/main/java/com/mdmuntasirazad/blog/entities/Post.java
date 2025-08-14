@@ -1,26 +1,12 @@
 package com.mdmuntasirazad.blog.entities;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*; // Make sure all imports are from jakarta
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -36,27 +22,27 @@ public class Post {
     @Column(name = "post_title", length = 100, nullable = false)
     private String title;
 
-    @Column(length = 10000) // Use a larger length for the post content
+    @Column(length = 10000) // Note: A very large length might be better handled by @Lob or columnDefinition="TEXT"
     private String content;
 
     private String imageName;
 
     private Date addedDate;
 
-    // --- Relationships ---
+    // --- THIS IS THE NEW FIELD FOR THE APPROVAL WORKFLOW ---
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status")
+    private PostStatus status;
+    // --------------------------------------------------------
 
-    // Many posts can belong to one category. This is the "owning" side of the relationship.
     @ManyToOne
-    @JoinColumn(name = "category_id") // Creates the foreign key column 'category_id' in the 'posts' table.
-    @JsonBackReference // This is crucial. It prevents infinite recursion during JSON serialization.
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    // Many posts can be written by one user.
     @ManyToOne
-    @JoinColumn(name = "user_id") // Creates the foreign key column 'user_id' in the 'posts' table.
+    @JoinColumn(name = "user_id")
     private User user;
 
-    // A post can have many comments.
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 }

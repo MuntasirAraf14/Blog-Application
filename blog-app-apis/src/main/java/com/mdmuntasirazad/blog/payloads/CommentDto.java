@@ -13,7 +13,6 @@ public class CommentDto {
 	
 	private String content;
 
-	// Optional: It can be useful to include who made the comment.
-	// We use UserDto to avoid exposing the full User entity.
+	// This allows us to see who made the comment in the API response.
 	private UserDto user;
 }

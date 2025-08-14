@@ -19,25 +19,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categories")
+@Table(name="categories")
 @NoArgsConstructor
 @Getter
 @Setter
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer categoryId;
-
-    @Column(name = "title", length = 100, nullable = false)
-    private String categoryTitle;
-
-    @Column(name = "description")
-    private String categoryDescription;
-
-    // UPDATE: Restored the one-to-many relationship to the Post entity.
-    // This is essential for a category to be useful.
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference("post-category") // Manages the "forward" part of the reference to prevent infinite loops.
-    private List<Post> posts = new ArrayList<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer categoryId;
+	
+	@Column(name="title",length = 100,nullable = false)
+	private String categoryTitle;
+	
+	@Column(name="description")
+	private String categoryDescription;
+	
+	
+	@OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Post> posts=new ArrayList<>();
+	
 }

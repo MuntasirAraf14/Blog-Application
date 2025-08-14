@@ -1,13 +1,6 @@
 package com.mdmuntasirazad.blog.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +16,12 @@ public class Comment {
 
     private String content;
 
-    // A comment must belong to a post. This is the "owning" side.
     @ManyToOne
-    @JoinColumn(name = "post_id") // Creates the foreign key
-    @JsonBackReference("post-comment") // Prevents infinite loop during serialization
     private Post post;
+
+    // --- THIS IS THE NEW RELATIONSHIP ---
+    @ManyToOne
+    @JoinColumn(name = "user_id") // This will create a user_id foreign key column
+    private User user;
+    // ------------------------------------
 }
